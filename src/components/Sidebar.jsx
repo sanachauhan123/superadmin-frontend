@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  Drawer, List, ListItemButton, ListItemIcon, ListItemText,
-  Toolbar, useTheme
+   Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Toolbar,
+  Typography,
+  Divider,
+  Box,
+  useTheme,
 } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import StoreIcon from '@mui/icons-material/Store';
 import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -21,29 +31,57 @@ const menuItems = [
 const Sidebar = ({ onSelect }) => {
   const location = useLocation();
   const current = location.pathname.split('/')[2] || '';
-  const theme = useTheme();
+   const [collapsed, setCollapsed] = useState(false);
+    const [selected, setSelected] = useState('');
+    const theme = useTheme();
 
   return (
     <Drawer
       variant="permanent"
-      sx={{
-        width: drawerWidth,
+       sx={{
+        width: collapsed ? 72 : drawerWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: drawerWidth,
+          width: collapsed ? 72 : drawerWidth,
           boxSizing: 'border-box',
           backgroundColor: theme.palette.background.paper,
           borderRight: `1px solid ${theme.palette.divider}`,
+          transition: 'width 0.3s',
         },
       }}
     >
-      <Toolbar />
+       <Toolbar
+              sx={{
+                display: 'flex',
+                justifyContent: collapsed ? 'center' : 'space-between',
+                px: 2,
+              }}
+            >
+              {!collapsed && (
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}
+                >
+                  🍽️ RestoPanel
+                </Typography>
+              )}
+              <IconButton onClick={() => setCollapsed(!collapsed)} size="small">
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+
+            <Divider />
+      
       <List>
         {menuItems.map((item) => (
           <ListItemButton
             key={item.text}
             selected={current === item.value}
-            onClick={() => onSelect(item.value)}
+            onClick={() => {
+              setSelected(item.value);
+              onSelect(item.value);
+            }}
             sx={{
               mx: 1,
               my: 0.5,
@@ -62,6 +100,12 @@ const Sidebar = ({ onSelect }) => {
               {item.icon}
             </ListItemIcon>
             <ListItemText primary={item.text} />
+            {!collapsed && (
+                          <ListItemText
+                            primary={item.label}
+                            primaryTypographyProps={{ fontWeight: selected === item.value ? 600 : 400 }}
+                          />
+                        )}
           </ListItemButton>
         ))}
       </List>

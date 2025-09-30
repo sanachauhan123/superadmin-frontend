@@ -102,6 +102,7 @@ const DashboardHome = () => {
       console.error('Error fetching data:', err);
     }
   };
+  
 
   fetchData();
 }, []);
@@ -111,7 +112,7 @@ const DashboardHome = () => {
     const token = localStorage.getItem('token');
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/orders`, {
+        const res = await axios.get(`${API_BASE_URL}/pastorders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
