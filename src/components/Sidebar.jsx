@@ -59,11 +59,11 @@ const Sidebar = ({ onSelect }) => {
             >
               {!collapsed && (
                 <Typography
-                  variant="h6"
+                  variant="subtitle1"
                   noWrap
                   sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}
                 >
-                  🍽️ RestoPanel
+                  🍽️ StridEdgePOS
                 </Typography>
               )}
               <IconButton onClick={() => setCollapsed(!collapsed)} size="small">
